@@ -1,4 +1,5 @@
 import express from 'express';
+import errorMiddleware from './middlewares/error.middleware';
 
 class App {
     public app: express.Application;
@@ -8,6 +9,7 @@ class App {
         this.app = express();
         this.initializeMiddlewares();
         this.initializeRoutes(routes);
+        this.initializeErrorHandling();
     }
 
     public initializeMiddlewares() {
@@ -19,6 +21,10 @@ class App {
         routes.forEach(route => {
             this.app.use('/', route.router);
         });
+    }
+
+    public initializeErrorHandling() {
+        this.app.use(errorMiddleware);
     }
 
     public startServer() {
