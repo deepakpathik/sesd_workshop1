@@ -1,6 +1,5 @@
 
 import App from './app';
-import TodoRoutes from '../routes/todo.route';
 
-const app = new App([new TodoRoutes()]);
+const app = new App([]);
 app.startServer();
