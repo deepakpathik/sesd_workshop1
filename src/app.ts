@@ -17,7 +17,7 @@ class App {
 
     public initializeRoutes(routes: any[]) {
         routes.forEach(route => {
-            this.app.use('/', route.route);
+            this.app.use('/', route.router);
         });
     }
 
