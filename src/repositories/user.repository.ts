@@ -7,7 +7,7 @@ class UserRepository {
         { id: 3, name: 'Alice Johnson', email: 'alice@example.com', role: 'user', isActive: false },
     ];
 
-    public async findAll(params: { search?: string; role?: string; isActive?: boolean }): Promise<User[]> {
+    public async findAll(params: { search?: string; role?: string; isActive?: boolean; page?: number; limit?: number }): Promise<{ users: User[]; total: number }> {
         let filteredUsers = this.users;
 
         if (params.role) {
@@ -26,7 +26,15 @@ class UserRepository {
             );
         }
 
-        return filteredUsers;
+        const total = filteredUsers.length;
+        const page = params.page || 1;
+        const limit = params.limit || 10;
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+
+        const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+        return { users: paginatedUsers, total };
     }
 
     public async findById(userId: number): Promise<User | null> {
