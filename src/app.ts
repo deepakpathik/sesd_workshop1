@@ -4,8 +4,21 @@ class App {
     public app: express.Application;
     public port: number | string = 8080;
 
-    constructor() {
+    constructor(routes: any[]) {
         this.app = express();
+        this.initializeMiddlewares();
+        this.initializeRoutes(routes);
+    }
+
+    public initializeMiddlewares() {
+        this.app.use(express.json());
+        this.app.use(express.urlencoded({ extended: true }));
+    }
+
+    public initializeRoutes(routes: any[]) {
+        routes.forEach(route => {
+            this.app.use('/', route.route);
+        });
     }
 
     public startServer() {
