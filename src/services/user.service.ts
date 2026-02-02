@@ -4,8 +4,8 @@ import UserRepository from '../repositories/user.repository';
 class UserService {
     public userRepository = new UserRepository();
 
-    public async findAllUser(): Promise<User[]> {
-        const allUsers: User[] = await this.userRepository.findAll();
+    public async findAllUser(params: any): Promise<User[]> {
+        const allUsers: User[] = await this.userRepository.findAll(params);
         return allUsers;
     }
 

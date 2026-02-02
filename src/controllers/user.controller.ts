@@ -7,7 +7,12 @@ class UserController {
 
     public getUsers = async (req: Request, res: Response): Promise<void> => {
         try {
-            const findAllUsersData: User[] = await this.userService.findAllUser();
+            const params = {
+                search: req.query.search as string,
+                role: req.query.role as string,
+                isActive: req.query.isActive === 'true' ? true : req.query.isActive === 'false' ? false : undefined
+            };
+            const findAllUsersData: User[] = await this.userService.findAllUser(params);
             res.status(200).json({ data: findAllUsersData, message: 'findAll' });
         } catch (error) {
             res.status(500).json({ message: error instanceof Error ? error.message : 'Something went wrong' });

@@ -7,8 +7,26 @@ class UserRepository {
         { id: 3, name: 'Alice Johnson', email: 'alice@example.com', role: 'user', isActive: false },
     ];
 
-    public async findAll(): Promise<User[]> {
-        return this.users;
+    public async findAll(params: { search?: string; role?: string; isActive?: boolean }): Promise<User[]> {
+        let filteredUsers = this.users;
+
+        if (params.role) {
+            filteredUsers = filteredUsers.filter(user => user.role === params.role);
+        }
+
+        if (params.isActive !== undefined) {
+            filteredUsers = filteredUsers.filter(user => user.isActive === params.isActive);
+        }
+
+        if (params.search) {
+            const searchLower = params.search.toLowerCase();
+            filteredUsers = filteredUsers.filter(user =>
+                user.name.toLowerCase().includes(searchLower) ||
+                user.email.toLowerCase().includes(searchLower)
+            );
+        }
+
+        return filteredUsers;
     }
 
     public async findById(userId: number): Promise<User | null> {
